@@ -1,0 +1,251 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Stores a player's daily puzzle streak counters, virtual pox balance, and display name without PII.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "currentStreak": {
+          "type": "integer"
+        },
+        "bestStreak": {
+          "type": "integer"
+        },
+        "lastSolvedDate": {
+          "type": "string",
+          "maxLength": 10,
+          "pattern": "^(|\\d{4}-\\d{2}-\\d{2})$"
+        },
+        "totalSolved": {
+          "type": "integer"
+        },
+        "poxBalance": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "userId",
+        "displayName",
+        "currentStreak",
+        "bestStreak",
+        "lastSolvedDate",
+        "totalSolved",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "DailyCompletion": {
+      "title": "DailyCompletion",
+      "description": "Immutable record of a user's completed daily puzzle for a specific calendar date.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "dateKey": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "puzzleType": {
+          "type": "string",
+          "enum": ["sudoku", "crossword", "wordsearch"]
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["easy", "medium", "hard"]
+        },
+        "timeSeconds": {
+          "type": "integer"
+        },
+        "mistakes": {
+          "type": "integer"
+        },
+        "completed": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "userId",
+        "dateKey",
+        "puzzleType",
+        "timeSeconds",
+        "mistakes",
+        "completed",
+        "createdAt"
+      ]
+    },
+    "PurchasedPuzzle": {
+      "title": "PurchasedPuzzle",
+      "description": "A custom puzzle unlocked by spending 50 pox from the user's virtual account.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "puzzleType": {
+          "type": "string",
+          "enum": ["sudoku", "crossword", "wordsearch"]
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["easy", "medium", "hard"]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "seedKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "themeIndex": {
+          "type": "integer"
+        },
+        "customTheme": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "customWords": {
+          "type": "array"
+        },
+        "costPox": {
+          "type": "integer"
+        },
+        "solved": {
+          "type": "boolean"
+        },
+        "bestTimeSeconds": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "puzzleType",
+        "difficulty",
+        "title",
+        "seedKey",
+        "themeIndex",
+        "customTheme",
+        "customWords",
+        "costPox",
+        "solved",
+        "bestTimeSeconds",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "Public daily solve time entry linked to a verified daily completion.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "playerName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "dateKey": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "puzzleType": {
+          "type": "string",
+          "enum": ["sudoku", "crossword", "wordsearch"]
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["easy", "medium", "hard"]
+        },
+        "timeSeconds": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "userId",
+        "playerName",
+        "dateKey",
+        "puzzleType",
+        "timeSeconds",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user streak profile and virtual pox balance keyed by Firebase Auth UID."
+    },
+    "/users/{userId}/dailyCompletions/{completionId}": {
+      "schema": { "$ref": "#/entities/DailyCompletion" },
+      "description": "Immutable daily completion records keyed by {dateKey}_{puzzleType}."
+    },
+    "/users/{userId}/purchasedPuzzles/{puzzleId}": {
+      "schema": { "$ref": "#/entities/PurchasedPuzzle" },
+      "description": "Custom puzzles unlocked by spending 50 pox each."
+    },
+    "/leaderboardEntries/{entryId}": {
+      "schema": { "$ref": "#/entities/LeaderboardEntry" },
+      "description": "Daily leaderboard entries keyed by {dateKey}_{puzzleType}_{userId}."
+    }
+  }
+}

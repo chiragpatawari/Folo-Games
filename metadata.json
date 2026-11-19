@@ -1,0 +1,8 @@
+{
+  "name": "Folio Games",
+  "description": "Minimalist daily Sudoku, Mini Crossword, and Word Search puzzles with global solve-time leaderboards and an AI game creator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
